@@ -2,7 +2,7 @@ pub mod registers {
     use std::ops::{Index, IndexMut};
 
     //LC3 supports 8 general purpose registers
-    enum Register {
+    pub enum Register {
         R0,
         R1,
         R2,
@@ -37,7 +37,7 @@ pub mod opcodes {
     // Now for instruction set , instructions supported are of 16 bits
     // We need supported OP_CODES which are of 4 bits
     #[allow(non_camel_case_types)]
-    enum OpCode {
+    pub enum OpCode {
         OP_ADD,  // add
         OP_AND,  // bitwise and
         OP_NOT,  // bitwise not
@@ -72,10 +72,30 @@ pub mod opcodes {
 }
 
 // These flags store the sign of previous calculations in LC3
-pub mod condflags {
-    enum Condflag {
-        POS_FL = 1 << 0,  //POSITIVE
-        ZERO_FL = 1 << 1, // ZERO
-        NEG_FL = 1 << 2,  // NEGATIVE
+#[allow(non_camel_case_types)]
+pub enum Condflag {
+    POS_FL = 1 << 0,  //POSITIVE
+    ZERO_FL = 1 << 1, // ZERO
+    NEG_FL = 1 << 2,  // NEGATIVE
+}
+
+use registers::Register;
+pub fn update_flags(mut reg: Vec<u16>, r: usize) {
+    let val: u16 = reg[r];
+
+    if val == 0 {
+        reg[Register::CONDVAR] = Condflag::ZERO_FL as u16;
+    } else if val >> 15 == 1 {
+        // means it is a negative number as leftmost bit is the sign bit
+        reg[Register::CONDVAR] = Condflag::NEG_FL as u16;
+    } else {
+        reg[Register::CONDVAR] = Condflag::POS_FL as u16;
     }
+}
+
+pub fn extend_with_sign(bit_count: u16, mut num: u16) -> u16 {
+    if (num >> (bit_count - 1)) & 1 == 1 {
+        num |= 0xFFFF << (bit_count);
+    }
+    num
 }
