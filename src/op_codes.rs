@@ -4,7 +4,7 @@ use vm::{extend_with_sign, update_flags};
 pub fn op_add(reg: &mut Vec<u16>, ins: u16) {
     let r0: usize = ((ins >> 9) & 0x07).into(); // destination register
     let r1: usize = ((ins >> 6) & 0x07).into(); // first operand register
-    let imm_flag: u16 = ((ins >> 5) & 0x01); // if immediate mode is on
+    let imm_flag: u16 = (ins >> 5) & 0x01; // if immediate mode is on
 
     if imm_flag == 1 {
         //extract last 5 bits of ins, which is the imm number
