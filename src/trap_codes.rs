@@ -1,3 +1,4 @@
+use std::io::Read;
 use vm::registers::Register;
 
 pub enum TrapCode {
@@ -13,14 +14,14 @@ pub enum TrapCode {
 // the lower address are left empty for trap routine codes.
 
 // get a single character as input
-pub fn trap_getc() {
+pub fn trap_getc(reg: &mut Vec<u16>) {
     let mut buffer = [0 as u8; 1];
     std::io::stdin().read_exact(&mut buffer).unwrap();
-    reg[Reg::R0] = buffer[0].into();
+    reg[Register::R0] = buffer[0].into();
 }
 
 pub fn trap_out(reg: &mut Vec<u16>) {
-    println!("{}", (reg[Reg::R0] as u8) as char);
+    println!("{}", (reg[Register::R0] as u8) as char);
 }
 
 pub fn trap_puts(reg: &mut Vec<u16>, memory: &mut Vec<u16>) {
@@ -52,10 +53,10 @@ pub fn trap_putsp(reg: &mut Vec<u16>, memory: &mut Vec<u16>) {
         // work gives an array of type u8
         let word = memory[index].to_be_bytes();
 
-        let print!("{}", bytes[1] as char);
+        print!("{}", word[1] as char);
 
-        if bytes[0] != 0 {
-            let print!("{}", bytes[0] as char);
+        if word[0] != 0 {
+            print!("{}", word[0] as char);
         }
         index += 1;
     }
@@ -64,5 +65,5 @@ pub fn trap_putsp(reg: &mut Vec<u16>, memory: &mut Vec<u16>) {
 // will be used in the main code
 pub fn trap_halt(running: &mut bool) {
     println!("HALT Trapcode received, Halting.");
-    running = false;
+    *running = false;
 }
