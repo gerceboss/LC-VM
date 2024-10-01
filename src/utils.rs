@@ -1,8 +1,7 @@
-use crate::registers::{Condflag, Register};
 use std::{fs::File, io::Read, path::Path};
+use crate::registers::{Condflag, Register};
 
 pub fn read_image(image: &str, memory: &mut Vec<u16>) -> bool {
-    //println!("read {}", image);
 
     let path = Path::new(image);
     let mut file = File::open(path).expect("No such file exists.");
@@ -17,7 +16,7 @@ pub fn read_image(image: &str, memory: &mut Vec<u16>) -> bool {
     let mut iter = data.chunks(2);
 
     //The first element specifies the address in memory where program
-    //should start. It is the general value 0x3000 or 12288 in rogue.obj
+    //should start. It is the general value 0x3000
     let pc = iter.next().unwrap();
 
     //We are combining two bytes into a u16 word as that is how our memory
