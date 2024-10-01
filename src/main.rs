@@ -51,7 +51,7 @@ fn main() {
 
     //Platform specific end
 
-    let args: Vec<String> = env::args().collect();
+    let _args: Vec<String> = env::args().collect();
 
     #[allow(non_snake_case)]
     let PC_START: u16 = 0x3000; //default starting address for PC to ensure smooth execution
