@@ -30,6 +30,6 @@ pub fn mem_read(address: u16, memory: &mut Vec<u16>) -> u16 {
     memory[address as usize]
 }
 
-pub fn mem_write(memory: &mut Vec<u16>, address: u16, val: u16) {
+pub fn mem_write(val: u16, memory: &mut Vec<u16>, address: u16) {
     memory[address as usize] = val;
 }
