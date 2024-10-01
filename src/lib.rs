@@ -80,7 +80,7 @@ pub enum Condflag {
 }
 
 use registers::Register;
-pub fn update_flags(mut reg: Vec<u16>, r: usize) {
+pub fn update_flags(reg: &mut Vec<u16>, r: usize) {
     let val: u16 = reg[r];
 
     if val == 0 {

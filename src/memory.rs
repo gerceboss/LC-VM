@@ -1,5 +1,7 @@
 // Total memory locations will be 65536
 
+use std::io::Read;
+
 //Memory Mapped Registers
 //These special register has addressess reserved for them in memory. So
 //to read and write to this register, we read/write into the memory.
@@ -11,7 +13,7 @@ pub enum MemMapReg {
     MR_KBDR = 0xFE02, //Keyboard Data Register. 0xFE02 = 65026.
 }
 
-pub fn mem_read(memory: &mut Vec<u16>, address: u16) -> u16 {
+pub fn mem_read(address: u16, memory: &mut Vec<u16>) -> u16 {
     //let instr: u16 = 0b1111_0000_00100100;
     if address == MemMapReg::MR_KBSR as u16 {
         let mut buffer = [0; 1];
