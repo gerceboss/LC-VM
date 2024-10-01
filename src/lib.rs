@@ -70,3 +70,12 @@ pub mod opcodes {
         }
     }
 }
+
+// These flags store the sign of previous calculations in LC3
+pub mod condflags {
+    enum Condflag {
+        POS_FL = 1 << 0,  //POSITIVE
+        ZERO_FL = 1 << 1, // ZERO
+        NEG_FL = 1 << 2,  // NEGATIVE
+    }
+}
