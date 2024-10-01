@@ -1,3 +1,4 @@
+use crate::registers::{Condflag, Register};
 use std::{fs::File, io::Read, path::Path};
 
 pub fn read_image(image: &str, memory: &mut Vec<u16>) -> bool {
@@ -30,4 +31,24 @@ pub fn read_image(image: &str, memory: &mut Vec<u16>) -> bool {
     }
 
     true
+}
+
+pub fn update_flags(reg: &mut Vec<u16>, r: usize) {
+    let val: u16 = reg[r];
+
+    if val == 0 {
+        reg[Register::CONDVAR] = Condflag::ZERO_FL as u16;
+    } else if val >> 15 == 1 {
+        // means it is a negative number as leftmost bit is the sign bit
+        reg[Register::CONDVAR] = Condflag::NEG_FL as u16;
+    } else {
+        reg[Register::CONDVAR] = Condflag::POS_FL as u16;
+    }
+}
+
+pub fn extend_with_sign(bit_count: u16, mut num: u16) -> u16 {
+    if (num >> (bit_count - 1)) & 1 == 1 {
+        num |= 0xFFFF << (bit_count);
+    }
+    num
 }

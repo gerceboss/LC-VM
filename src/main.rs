@@ -6,12 +6,16 @@ use termios::*;
 
 mod utils;
 use utils::*;
-use vm::opcodes::OpCode;
-use vm::registers::Register;
+
 mod op_codes;
 use op_codes::*;
+
+mod registers;
+use registers::*;
+
 mod memory;
 use memory::*;
+
 mod trap_codes;
 use trap_codes::*;
 

@@ -1,5 +1,5 @@
+use crate::registers::Register;
 use std::io::Read;
-use vm::registers::Register;
 
 pub enum TrapCode {
     GETC = 0x20,  // 32 - get character from keyboard, not echoed onto the terminal

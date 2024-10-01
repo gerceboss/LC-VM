@@ -1,6 +1,45 @@
 use crate::memory::*;
-use vm::registers::Register;
-use vm::{extend_with_sign, update_flags};
+use crate::registers::Register;
+use crate::utils::{extend_with_sign, update_flags};
+
+use std::ops::{Index, IndexMut};
+
+// Now for instruction set , instructions supported are of 16 bits
+// We need supported OP_CODES which are of 4 bits
+#[allow(non_camel_case_types)]
+pub enum OpCode {
+    OP_BR = 0, // branch
+    OP_ADD,    // add
+    OP_LD,     // load
+    OP_ST,     // store
+    OP_JSR,    // jump register
+    OP_AND,    // bitwise and
+    OP_LDR,    // load register
+    OP_STR,    // store register
+    OP_RTI,    // unused
+    OP_NOT,    // bitwise not
+    OP_LDI,    // load indirect
+    OP_STI,    // store indirect
+    OP_JMP,    // jump
+    OP_RES,    // reserved (unused)
+    OP_LEA,    // load effective address
+    OP_TRAP,   // execute trap
+}
+
+// we need indexing for them as well
+impl<T> Index<OpCode> for Vec<T> {
+    type Output = T;
+    fn index(&self, idx: OpCode) -> &Self::Output {
+        &self[idx as usize]
+    }
+}
+
+impl<T> IndexMut<OpCode> for Vec<T> {
+    fn index_mut(&mut self, idx: OpCode) -> &mut Self::Output {
+        &mut self[idx as usize]
+    }
+}
+
 pub fn op_add(reg: &mut Vec<u16>, ins: u16) {
     let r0: usize = ((ins >> 9) & 0x07).into(); // destination register
     let r1: usize = ((ins >> 6) & 0x07).into(); // first operand register
